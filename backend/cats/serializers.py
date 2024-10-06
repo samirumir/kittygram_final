@@ -1,3 +1,4 @@
+"""Docstring."""
 import base64
 import datetime as dt
 
@@ -9,10 +10,14 @@ from .models import Achievement, AchievementCat, Cat
 
 
 class Hex2NameColor(serializers.Field):
+    """Docstring."""
+
     def to_representation(self, value):
+        """Docstring."""
         return value
 
     def to_internal_value(self, data):
+        """Docstring."""
         try:
             data = webcolors.hex_to_name(data)
         except ValueError:
@@ -21,15 +26,22 @@ class Hex2NameColor(serializers.Field):
 
 
 class AchievementSerializer(serializers.ModelSerializer):
+    """Docstring."""
+
     achievement_name = serializers.CharField(source='name')
 
     class Meta:
+        """Docstring."""
+
         model = Achievement
         fields = ('id', 'achievement_name')
 
 
 class Base64ImageField(serializers.ImageField):
+    """Docstring."""
+
     def to_internal_value(self, data):
+        """Docstring."""
         if isinstance(data, str) and data.startswith('data:image'):
             format, imgstr = data.split(';base64,')
             ext = format.split('/')[-1]
@@ -40,6 +52,8 @@ class Base64ImageField(serializers.ImageField):
 
 
 class CatSerializer(serializers.ModelSerializer):
+    """Docstring."""
+
     achievements = AchievementSerializer(required=False, many=True)
     color = Hex2NameColor()
     age = serializers.SerializerMethodField()
@@ -50,6 +64,8 @@ class CatSerializer(serializers.ModelSerializer):
     )
 
     class Meta:
+        """Docstring."""
+
         model = Cat
         fields = (
             'id', 'name', 'color', 'birth_year', 'achievements',
@@ -58,14 +74,17 @@ class CatSerializer(serializers.ModelSerializer):
         read_only_fields = ('owner',)
 
     def get_image_url(self, obj):
+        """Docstring."""
         if obj.image:
             return obj.image.url
         return None
 
     def get_age(self, obj):
+        """Docstring."""
         return dt.datetime.now().year - obj.birth_year
 
     def create(self, validated_data):
+        """Docstring."""
         if 'achievements' not in self.initial_data:
             cat = Cat.objects.create(**validated_data)
             return cat
@@ -81,6 +100,7 @@ class CatSerializer(serializers.ModelSerializer):
         return cat
 
     def update(self, instance, validated_data):
+        """Docstring."""
         instance.name = validated_data.get('name', instance.name)
         instance.color = validated_data.get('color', instance.color)
         instance.birth_year = validated_data.get(

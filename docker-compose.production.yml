@@ -1,4 +1,4 @@
-# kittygram docker-compose.yml
+# docker-compose kittygram
 # version: '3'
 
 volumes:
@@ -12,20 +12,23 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
+
   backend:
-    build: ./backend/
+    image: samirumir/kittygram_backend
     env_file: .env
     volumes:
       - static:/static
       - media:/media
+
   frontend:
+    image: samirumir/kittygram_frontend
     env_file: .env
-    build: ./frontend/
     command: cp -r /app/build/. /static/
     volumes:
       - static:/static
+
   gateway:
-    build: ./nginx/
+    image: samirumir/kittygram_gateway
     env_file: .env
     ports:
       - 8080:80
