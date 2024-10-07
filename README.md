@@ -60,3 +60,4 @@ docker compose -f docker-compose.production.yml exec backend cp -r /app/collecte
 Просмотр питомца: GET `/cats/{cat_id}`
 
 ##### Автор проекта: Самир Ханкишиев
+
