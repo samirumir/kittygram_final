@@ -12,7 +12,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
 
-DEBUG = ('true' == os.getenv('DEBUG'))
+DEBUG = ('true' == str(os.getenv('DEBUG')).lower)
 
 ALLOWED_HOSTS = str(os.getenv('ALLOWED_HOSTS')).split(' ')
 
