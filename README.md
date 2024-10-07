@@ -1,29 +1,62 @@
-#  Как работать с репозиторием финального задания
-(https://github.com/github/docs/actions/workflows/main.yml/badge.svg?event=push)
-(https://github.com/github/docs/actions/workflows/kittygram_workflow.yml/badge.svg?event=push)
+# Kittygram
+
+### Статус актуального workflow 
 ![workflow status](https://github.com/samirumir/kittygram_final/actions/workflows/main.yml/badge.svg)
 
-## Что нужно сделать
+## Описание
+Этот проект, социальная сеть, для обмена фотографиями любимых питомцев. Предназанечна для загрузки, описания и краткой информации о котах, и распространением информацией о них с другими пользователями.
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+**Инструменты и стек:** #Python #Django #Docker #API #Nginx #Djoser #Gunicorn #JSON #YAML #Postman #Visual Studio Code
 
-## Как проверить работу с помощью автотестов
+## Запуск
+Запуск проекта выполняется с удаленного сервера. Рассмотрим процесс выполнения 
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+1. В корневой директории проекта необходимо создать и заполнить файл **.env** с переменными окружения:
+```bash
+sudo nano .env
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+2. Добавляем следующие переменные:
+```nano
+ENABLE_POSTGRES_DB
+POSTGRES_DB=admin
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin
+DB_HOST=db
+DB_PORT=5432
+SECRET_KEY=...
+DEBUG=... # True/False
+ALLOWED_HOSTS=127.0.0.1, localhost, **your_domain**
+```
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+3. Установка утилиты Docker Compose:
+```bash
+sudo apt update
+sudo apt-get install docker-compose-plugin 
+```
 
-## Чек-лист для проверки перед отправкой задания
+4. В корневую директорию проекта копируем файл `docker-compose.production.yml` и запускаем Docker Compose:
+```bash
+sudo docker compose -f docker-compose.production.yml up
+```
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+5. Выполняем миграции с запущенным проектом:
+```bash
+docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+```
+6. Собираем статику и копируем в папку статики, где хранится backend:
+```bash
+docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
+```
+
+
+## Примеры запросов 
+
+Добавить питомца: POST `/cats/add`
+
+Редактировать питомца: PUTCH `/cats/edit`
+
+Просмотр питомца: GET `/cats/{cat_id}`
+
+##### Автор проекта: Самир Ханкишиев
