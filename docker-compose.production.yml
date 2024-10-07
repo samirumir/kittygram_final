@@ -32,11 +32,10 @@ services:
 
   gateway:
     depends_on:
-      backend: 
-        condition: service_completed_successfully
-    depends_on:
-      frontend:
-        condition: service_completed_successfully
+        backend: 
+          condition: service_completed_successfully
+        frontend:
+          condition: service_completed_successfully
     image: samirumir/kittygram_gateway
     env_file: .env
     ports:
