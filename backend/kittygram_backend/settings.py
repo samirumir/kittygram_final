@@ -17,7 +17,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = ('true' == str(os.getenv('DEBUG')).lower())
 #DEBUG  = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') 
+ALLOWED_HOSTS = str(os.getenv('ALLOWED_HOSTS')).split(',') 
 #ALLOWED_HOSTS = ['localhost','127.0.0.1','158.160.18.251','kittygramsamir.myftp.org'] 
 
 INSTALLED_APPS = [
