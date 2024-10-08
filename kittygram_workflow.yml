@@ -128,6 +128,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: 
       - build_and_push_to_docker_hub
       - build_frontend_and_push_to_docker_hub
@@ -164,6 +165,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
+    - name: Get Commit Info
+      id: commit_info
+      run: |
+        echo "::set-output name=actor::${{ github.actor }}"
+        echo "::set-output name=message::${{ github.event.commits[0].message }}"
+        echo "::set-output name=commit_url::https://github.com/${{ github.repository }}/commit/${{ github.sha }}"
     - name: Send message
       uses: appleboy/telegram-action@master
       with:
@@ -171,5 +178,5 @@ jobs:
         token: ${{ secrets.TELEGRAM_TOKEN }}
         message: |
           Деплой успешно выполнен!
-          Коммит выполнен пользователем ${ {steps.commit_info.outputs.actor }}: "${{ steps.commit_info.outputs.message }}"
+          Коммит выполнен пользователем ${ {steps.commit_info.outputs.author }}: "${{ steps.commit_info.outputs.message }}"
           Ссылка https://github.com/${{ github.repository }}/commit/${{github.sha}}.
