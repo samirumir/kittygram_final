@@ -14,7 +14,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 #SECRET_KEY = 'django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-89$'
 
-DEBUG = ('true' == os.getenv('DEBUG').lower())
+DEBUG = ('true' == str(os.getenv('DEBUG')).lower())
 #DEBUG  = True
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') 
