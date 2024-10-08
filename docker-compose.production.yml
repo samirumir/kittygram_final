@@ -9,6 +9,7 @@ volumes:
 services:
   db:
     image: postgres:13
+
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
@@ -16,7 +17,7 @@ services:
   backend:
     depends_on:
       db:
-        condition: service_completed_successfully
+        condition: "service_started"
     image: samirumir/kittygram_backend
     env_file: .env
     volumes:
@@ -32,10 +33,10 @@ services:
 
   gateway:
     depends_on:
-      backend: 
-        condition: service_completed_successfully
+      backend:
+        condition: "service_started"
       frontend:
-        condition: service_completed_successfully
+        condition: "service_started"
     image: samirumir/kittygram_gateway
     env_file: .env
     ports:
