@@ -21,7 +21,7 @@ services:
     env_file: .env
     volumes:
       - static:/static
-      - media:/media
+      - media:/app/media
 
   frontend:
     image: samirumir/kittygram_frontend
@@ -42,4 +42,4 @@ services:
       - 8080:80
     volumes:
       - static:/static
-      - media:/media
+      - media:/app/media
