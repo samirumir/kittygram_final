@@ -13,7 +13,9 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
 
 DEBUG = ('true' == os.getenv('DEBUG').lower())
-
+#SECRET_KEY = 'django-insecure-cg6*%6d51ef8f#4!r3*$vmxm4)abgjw8mo!4y-q*uq1!4$-89$'
+#DEBUG = True
+#ALLOWED_HOSTS = ['localhost','127.0.0.1','158.160.18.251','kittygramsamir.myftp.org']
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', default='127.0.0.1,localhost').split(',')
 
 INSTALLED_APPS = [
